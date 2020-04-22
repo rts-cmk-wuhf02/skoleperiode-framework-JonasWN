@@ -1,21 +1,28 @@
 import React, { Component } from 'react'
-import { Link } from '@reach/router'
+import { Link, navigate } from '@reach/router'
 
 export default class ErrorBoundary extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            hasError: false
+            hasError: false,
+            redirect: false
         }
     }
 
-    static getDerivivedStateFromError() {
+    static getDerivedStateFromError() {
         return { hasError: true }
     }
 
     componentDidCatch(error, info) {
         // eslint-disable-next-line
         console.error('ErrorBoundary caught an error', error, info)
+    }
+
+    componentDidUpdate() {
+        if (this.state.hasError) {
+            setTimeout(() => navigate("/"), 4000);
+        }
     }
 
     render() {
